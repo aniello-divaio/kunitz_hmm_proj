@@ -1,4 +1,17 @@
-# Kunitz_HMM_Proj
-This repository contains the full pipeline to build, validate, and test a Hidden Markov Model (HMM) for identifying Kunitz domain-containing proteins, leveraging structural alignment data and sequence-based statistical modeling.
+# Analisi HMM per il dominio Kunitz
 
-''' for i in file1'''
+Questo progetto costruisce un modello HMM a partire da un allineamento strutturale.
+
+## Requisiti
+
+- `cd-hit`
+- `hmmbuild`
+- `hmmsearch`
+
+## Comandi
+
+```bash
+cd-hit -i input.fasta -o clustered.fasta -c 0.9
+hmmbuild model.hmm alignment.fasta
+hmmsearch model.hmm test_set.fasta
+
