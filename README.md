@@ -1,17 +1,2 @@
-# Analisi HMM per il dominio Kunitz
-
-Questo progetto costruisce un modello HMM a partire da un allineamento strutturale.
-
-## Requisiti
-
-- `cd-hit`
-- `hmmbuild`
-- `hmmsearch`
-
-## Comandi
-
-```bash
-cd-hit -i input.fasta -o clustered.fasta -c 0.9
-hmmbuild model.hmm alignment.fasta
-hmmsearch model.hmm test_set.fasta
-
+# In Silico Modeling of the Kunitz-Type Domain Using Profile Hidden Markov Models
+### This repository presents a full workflow for building and evaluating a profile Hidden Markov Model (HMM) to identify the Kunitz protease inhibitor domain (PF00014) using structural and sequence data. The workflow integrates structural alignment, sequence filtering, model training, dataset construction, and performance evaluation.
