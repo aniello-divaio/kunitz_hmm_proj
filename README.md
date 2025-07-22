@@ -15,9 +15,9 @@ Go to 'https://www2.rcsb.org/' and with advanced research get a set of proteins 
 Following these specifics:
 - Entry ID, PDB ID, Resolution
 - Sequence, Asym ID, PFAM annotation, Entity ID
-Download it in a  '.cvs' file, then convert it in FASTA using `convert_to_fasta.sh`.
+Download it in a  `.cvs` file, then convert it in FASTA using `convert_to_fasta.sh`.
 
-###1.3 Run 'cd-hit'
+### 1.3 Run `cd-hit`
 Open the terminal and run 'cd-hit' with 90% threshold:
 
 ```bash
