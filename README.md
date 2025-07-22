@@ -6,7 +6,7 @@
 ## 1. Structural Data Acquisition and Preprocessing
 
 ### 1.1 Retrieve PDB entries with:
-Go to 'https://www2.rcsb.org/' and with advanced research get a set of proteins with with Kunitz domain (N=160)
+Go to https://www2.rcsb.org/ and with advanced research get a set of proteins with with Kunitz domain (N=160)
 - Resolution ≤ 3.5 Å
 - PFAM ID = PF00014
 - Sequence length between 45 and 80 residues
@@ -47,11 +47,13 @@ done
 ## 2. Multiple Structural Alignment
 
 ### 2.1 Format input for PDBeFold:
+Modify the previous file with: 
 ```bash
 grep '^>' pdb_kunitz_cluster.txt | sed 's/^>//' | sed 's/_/:/' > pdb_kunitz_ids_25.txt
 ```
+to obtain a file with only codes for the protein to input inside the alignment tool. 
 
-Upload the list to [PDBeFold](https://www.ebi.ac.uk/msd-srv/ssm/).  
+Go to [PDBeFold](https://www.ebi.ac.uk/msd-srv/ssm/) -> Launch PDBeFold -> Flag Submission Form: multiple -> Upload the list `pdb_kunitz_ids_25.txt` -> Submit your query. 
 Download `efold_output.txt`, then clean it using the script:
 
 ```bash
@@ -62,7 +64,8 @@ Output: `kunitz_hmm_ready.fasta`
 
 ---
 
-## 3. 🔧 Build the HMM Model
+## 3. Build the HMM Model
+To build and run an HMM Model, go to your terminal and run: 
 
 ```bash
 hmmbuild kunitz_domain.hmm kunitz_hmm_ready.fasta
@@ -70,7 +73,7 @@ hmmbuild kunitz_domain.hmm kunitz_hmm_ready.fasta
 
 ---
 
-## 4. ✅ Validation Dataset Compilation
+## 4. Validation Dataset Compilation
 
 ### 4.1 Download:
 - Human Kunitz proteins (N = 18)
