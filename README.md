@@ -15,6 +15,8 @@
 - Sequence, Asym ID, PFAM annotation, Entity ID
 
 ### 1.3 Convert `.csv` to FASTA and cluster with CD-HIT:
+Use `convert_to_fasta.sh` to convert PDB custom report into FASTA format.
+
 ```bash
 cd-hit -i kunitz_sequences.fasta -o kunitz_clustered.fasta -c 0.9
 ```
@@ -43,7 +45,7 @@ grep '^>' pdb_kunitz_cluster.txt | sed 's/^>//' | sed 's/_/:/' > pdb_kunitz_ids_
 ```
 
 Upload the list to [PDBeFold](https://www.ebi.ac.uk/msd-srv/ssm/).  
-Download `efold_output.txt`, clean it with:
+Download `efold_output.txt`, then clean it using the script:
 
 ```bash
 ./clean_fasta.sh
@@ -100,7 +102,7 @@ comm -23 <(sort kunitz_all.txt) <(sort to_remove.txt) > kunitz_final.txt
 
 ## 6. 📁 Negative Dataset Preparation
 
-- Download SwissProt without PF00014 (573,230 sequences)
+Download SwissProt without PF00014:
 ```bash
 grep ">" uniprot_sprot.fasta | cut -d "|" -f2 > uniprot_sprot.txt
 comm -23 <(sort uniprot_sprot.txt) <(sort kunitz_final.txt) > negatives.txt
@@ -122,7 +124,7 @@ head -n 286416 negatives_random.txt > neg_1.txt
 tail -n 286416 negatives_random.txt > neg_2.txt
 ```
 
-### Generate FASTA:
+### Generate FASTA using `get_seq.py`:
 ```bash
 python3 get_seq.py pos_1.txt NOT_uniprot_sprot.fasta > pos_1.fasta
 python3 get_seq.py pos_2.txt NOT_uniprot_sprot.fasta > pos_2.fasta
@@ -154,7 +156,7 @@ cat pos_1.class neg_1.class > set_1.class
 
 ## 9. 📊 Performance Evaluation
 
-Run:
+Use `performance.py`:
 ```bash
 python3 performance.py set_1.class 1e-1
 ```
@@ -173,11 +175,7 @@ Metrics reported:
 
 ---
 
-## 🧪 Tools Used
+## 🧪 Tools and Scripts Used
 
-- `cd-hit`
-- `hmmbuild` (HMMER)
-- `BLAST+`
-- `hmmsearch`
-- `PDBeFold`
-- Python 3 scripts: `get_seq.py`, `performance.py`
+- `cd-hit`, `hmmbuild` (HMMER), `BLAST+`, `hmmsearch`, `PDBeFold`
+- `convert_to_fasta.sh`, `clean_fasta.sh`, `get_seq.py`, `performance.py`
