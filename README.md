@@ -178,7 +178,7 @@ python3 get_seq.py neg_2.txt uniprot_sprot.fasta > neg_2.fasta
 
 ---
 
-## 8. 🔍 HMM Scanning and Classification
+## 8. HMM Scanning and Classification
 
 ```bash
 hmmsearch -Z 1000 --max --tblout pos_1.out kunitz_domain.hmm pos_1.fasta
@@ -197,7 +197,7 @@ cat pos_1.class neg_1.class > set_1.class
 
 ---
 
-## 9. 📊 Performance Evaluation
+## 9. Performance Evaluation
 
 Use `performance.py`:
 ```bash
