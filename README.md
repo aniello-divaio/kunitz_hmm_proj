@@ -1,5 +1,5 @@
 # In Silico Modeling of the Kunitz-Type Domain Using Profile Hidden Markov Models
-#### This repository presents a full workflow for building and evaluating a profile Hidden Markov Model (HMM) to identify the Kunitz protease inhibitor domain (PF00014) using structural and sequence data. The workflow integrates structural alignment, sequence filtering, model training, dataset construction, and performance evaluation.
+This repository presents a full workflow for building and evaluating a profile Hidden Markov Model (HMM) to identify the Kunitz protease inhibitor domain (PF00014) using structural and sequence data. The workflow integrates structural alignment, sequence filtering, model training, dataset construction, and performance evaluation.
 
 ---
 
@@ -74,35 +74,52 @@ hmmbuild kunitz_domain.hmm kunitz_hmm_ready.fasta
 ---
 
 ## 4. Validation Dataset Compilation
+#### Collection of protein IDs to create the positive and the negative datasets:
 
-### 4.1 Download:
-- Human Kunitz proteins (N = 18)
-- Non-human Kunitz proteins (N = 380)
-- Both reviewed, PF00014
+### 4.1 Download the datasets:
+From [UniProtKB](https://www.uniprot.org/) collect all human proteins containg a Kunitz domain from UniProtKB database (N = 18) with these filters: 
+- Human (Taxonomy [OC] = 9606) 
+- PFAM id = PF00014 4. SwissProt 	reviewed
+- Reviewed: Yes
+
+Collect all not-human proteins containing a kunitz domain from the UniProtKB (N = 380) and download the fasta file (e.g kunitz_not_human.fasta) with these filters:
+- Not human (NOT Taxonomy [OC] = 9606)
+- PFAM id = PF00014
+- SwissProt reviewed
+
+ and download the fasta files. 
 
 ### 4.2 Merge datasets:
+
+Merge the two Kunitz domain dataset files to form a unified collection of positive examples to test the HMM with `kunitz_all.fasta`
+
 ```bash
 cat NOT_human_kunitz.fasta kunitz_all.fasta > hmm_test_set.fasta
 ```
 
 ---
 
-## 5. 🚫 Remove Highly Similar Sequences
+## 5. Remove Highly Similar Sequences
+Remove all sequences with a `sequence identity ≥ 95%` and a `Nres ≥ 50` mapping the aligned sequences set on the positive dataset. 
 
 ### 5.1 Build BLAST DB:
+Create a blast database with the kunitz proteins from UniProtKB/SwissProt
 ```bash
-makeblastdb -in hmm_set.fasta -dbtype prot
+makeblastdb -in hmm_set.fasta -input_type fasta -dbtype prot -out hmm_set.fasta
 ```
 
-### 5.2 Run BLAST and filter:
+### 5.2 Run a blastp search on the aligned sequences:
 ```bash
-blastp -query kunitz_hmm_ready.ali -db hmm_set.fasta -outfmt 7 > kunitz_pdb22.blast
-
+blastp -query kunitz_hmm_ready.ali -db hmm_set.fasta -out kunitz_pdb22.blast -outfmt 7
+```
+Filter highly similar hits and create a file with the ids to remove:
+```
 grep -v "^#" kunitz_pdb22.blast | awk '{if ($3>=95 && $4>=50) print $2}' | sort -u > high_match_22.txt
 cut -d'|' -f2 high_match_22.txt > to_remove.txt
 ```
 
-### 5.3 Extract final positive IDs:
+### 5.3 Extract the unmatched ids for the proteins that will form the positive database:
+Create the file txt with all the ids
 ```bash
 grep "^>" hmm_set.fasta | cut -d'|' -f2 > kunitz_all.txt
 comm -23 <(sort kunitz_all.txt) <(sort to_remove.txt) > kunitz_final.txt
@@ -110,35 +127,51 @@ comm -23 <(sort kunitz_all.txt) <(sort to_remove.txt) > kunitz_final.txt
 
 ---
 
-## 6. 📁 Negative Dataset Preparation
+## 6. Negative Dataset Preparation
+Collect all SwissProt reviewed not-kunitz proteins (573.230) and download the fasta file
+(e.g. uniprot_sprot.fasta --> this is the whole uniprot databses WITHOUT the Kunitz proteins). Filters are:
+- Not PFAM id PF00014
+- SwissProt
+And repeat the process with Kunitz proteins
 
-Download SwissProt without PF00014:
+### 6.1 Create a list of the IDs of the whole UniProtKB/SwissProt 
+
 ```bash
 grep ">" uniprot_sprot.fasta | cut -d "|" -f2 > uniprot_sprot.txt
+```
+
+### 6.2 Remove the positive IDs from the list of the negatives
+```
 comm -23 <(sort uniprot_sprot.txt) <(sort kunitz_final.txt) > negatives.txt
 ```
 
 ---
 
-## 7. 🧪 Dataset Subsetting
-
+## 7. Dataset Subsetting
+### 7.1 Random sorting of the ID files
 ```bash
 sort -R kunitz_final.txt > kunitz_final_random.txt
 sort -R negatives.txt > negatives_random.txt
+```
+### 7.2 Subsetting the randomized sets in halves
+```
 
-# Split sets
+# Positives:
 head -n 183 kunitz_final_random.txt > pos_1.txt
 tail -n 182 kunitz_final_random.txt > pos_2.txt
 
+# Negatives:
 head -n 286416 negatives_random.txt > neg_1.txt
 tail -n 286416 negatives_random.txt > neg_2.txt
 ```
 
-### Generate FASTA using `get_seq.py`:
+### 7.3 Generate FASTA using `get_seq.py`:
 ```bash
+# Positives:
 python3 get_seq.py pos_1.txt NOT_uniprot_sprot.fasta > pos_1.fasta
 python3 get_seq.py pos_2.txt NOT_uniprot_sprot.fasta > pos_2.fasta
 
+# Negatives: 
 python3 get_seq.py neg_1.txt uniprot_sprot.fasta > neg_1.fasta
 python3 get_seq.py neg_2.txt uniprot_sprot.fasta > neg_2.fasta
 ```
@@ -173,10 +206,20 @@ python3 performance.py set_1.class 1e-1
 
 Loop version:
 ```bash
-for i in $(seq 1 12); do
-  echo "Threshold: 1e-$i"
-  python3 performance.py set_1.class 1e-$i
+# FOR SET_1
+for i in $(seq 1 12); do 
+echo "Threshold: 1e-$i" 
+python3 performance.py set_1.class 1e-$i 
+echo "" 
 done
+
+
+# FOR SET 2:
+for i in $(seq 1 12); do
+echo "Threshold: 1e-$i";
+python3 performance.py set_2.class 1e-$i;     
+echo "";
+done 
 ```
 
 Metrics reported:
@@ -185,7 +228,7 @@ Metrics reported:
 
 ---
 
-## 🧪 Tools and Scripts Used
+## Tools and Scripts Used
 
 - `cd-hit`, `hmmbuild` (HMMER), `BLAST+`, `hmmsearch`, `PDBeFold`
 - `convert_to_fasta.sh`, `clean_fasta.sh`, `get_seq.py`, `performance.py`
