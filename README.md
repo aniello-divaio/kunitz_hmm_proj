@@ -3,19 +3,22 @@
 
 ---
 
-## 1. 📥 Structural Data Acquisition and Preprocessing
+## 1. Structural Data Acquisition and Preprocessing
 
 ### 1.1 Retrieve PDB entries with:
+Go to 'https://www2.rcsb.org/' and with advanced research get a set of proteins with with Kunitz domain (N=160)
 - Resolution ≤ 3.5 Å
 - PFAM ID = PF00014
 - Sequence length between 45 and 80 residues
 
-### 1.2 Create a custom PDB report with:
+### 1.2 Create a custom PDB report:
+Following these specifics:
 - Entry ID, PDB ID, Resolution
 - Sequence, Asym ID, PFAM annotation, Entity ID
+Download it in a  '.cvs' file, then convert it in FASTA using `convert_to_fasta.sh`.
 
-### 1.3 Convert `.csv` to FASTA and cluster with CD-HIT:
-Use `convert_to_fasta.sh` to convert PDB custom report into FASTA format.
+###1.3 Run 'cd-hit'
+Open the terminal and run 'cd-hit' with 90% threshold:
 
 ```bash
 cd-hit -i kunitz_sequences.fasta -o kunitz_clustered.fasta -c 0.9
@@ -27,9 +30,13 @@ cd-hit -i kunitz_sequences.fasta -o kunitz_clustered.fasta -c 0.9
 ---
 
 ### 1.4 Extract representative sequences:
+Extract the representative sequence IDs form the '.clstr' file with:
+
 ```bash
 grep '*' kunitz_clustered.fasta.clstr | cut -d '>' -f2 | cut -d '.' -f1 > representative_ids.txt
-
+```
+Retrieve the corresponding sequences from the original FASTA file and save them to a new file:
+```
 for i in $(cat representative_ids.txt); do
   grep -A 1 "^>$i" kunitz_sequences.fasta | tail -n 2 >> kunitz_representatives.fasta
 done
@@ -37,7 +44,7 @@ done
 
 ---
 
-## 2. 🧩 Multiple Structural Alignment
+## 2. Multiple Structural Alignment
 
 ### 2.1 Format input for PDBeFold:
 ```bash
