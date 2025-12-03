@@ -21,43 +21,35 @@ tr -d '"' < rcsb_pdb_custom_report.csv | awk -F ',' '{if (length($2)>0) {name=$2
 ```
 
 ### 1.2 Run `cd-hit`
-Open the terminal and run 'cd-hit' with 90% threshold:
+Open the terminal and run 'cd-hit' with standard threshold  (sequence identity = 90%) allowed the identification of the set of proteins (N = 25):
 
 ```bash
-cd-hit -i kunitz_sequences.fasta -o kunitz_clustered.fasta -c 0.9
+cd-hit -i pdb_kunitz.fasta -o pdb_kunitz_cluster.txt    
 ```
 
 **Results:**
 - 160 sequences → 25 clusters
 
----
-
-### 1.4 Extract representative sequences:
-Extract the representative sequence IDs form the '.clstr' file with:
-
-```bash
-grep '*' kunitz_clustered.fasta.clstr | cut -d '>' -f2 | cut -d '.' -f1 > representative_ids.txt
-```
-Retrieve the corresponding sequences from the original FASTA file and save them to a new file:
-```
-for i in $(cat representative_ids.txt); do
-  grep -A 1 "^>$i" kunitz_sequences.fasta | tail -n 2 >> kunitz_representatives.fasta
-done
-```
+Two files were generated:
+• A .clstr file (e.g. pdb_kunitz_cluster.txt.clstr)
+• A .txt file (e.g. pdb_kunitz_cluster.txt — your clustered sequences)
+The .clstr file contains raw cluster info, but its format may result hard to parse directly.
 
 ---
 
 ## 2. Multiple Structural Alignment
-
-### 2.1 Format input for PDBeFold:
-Modify the previous file with: 
+In order to perform MSA all the proteins IDs from the clustering were extracted, using the command:
 ```bash
 grep '^>' pdb_kunitz_cluster.txt | sed 's/^>//' | sed 's/_/:/' > pdb_kunitz_ids_25.txt
 ```
-to obtain a file with only codes for the protein to input inside the alignment tool. 
 
-Go to [PDBeFold](https://www.ebi.ac.uk/msd-srv/ssm/) -> Launch PDBeFold -> Flag Submission Form: multiple -> Upload the list `pdb_kunitz_ids_25.txt` -> Submit your query. 
-Download `efold_output.txt`, then clean it using the script:
+### 2.1 Format input for PDBeFold:
+[PDBeFold](https://www.ebi.ac.uk/msd-srv/ssm/) is the platform where the MSA was performed, with the following criteria:
+- Flag Submission Form: multiple
+- Upload the list `pdb_kunitz_ids_25.txt`
+Submit your query and download the resulting `efold_output.txt`.
+
+then clean it using the script:
 
 ```bash
 ./clean_fasta.sh
