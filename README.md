@@ -48,17 +48,13 @@ grep '^>' pdb_kunitz_cluster.txt | sed 's/^>//' | sed 's/_/:/' > pdb_kunitz_ids_
 - Flag Submission Form: multiple
 - Upload the list `pdb_kunitz_ids_25.txt`
 
-Submit your query and download the resulting `efold_output.txt`.
+Submit your query and download the resulting `kunitz_msa_25.fasta`.
+From this file three sequences were manually removed:
+- 2ODY:F (highest number of aligned residue (Nres=127))
+- 5JBT:Y (lowest number of aligned residues (Nres = 38))
+- 4BQD:A removed due to the lack in the its chain A of one or both β-strands typical of Kunitz fold
 
-then clean it using the script:
-
-```bash
-./clean_fasta.sh
-```
-
-Output: `kunitz_hmm_ready.fasta`
-
----
+Following the same procedure, perform a second multiple structural alignment using the set of 22 proteins
 
 ## 3. Build the HMM Model
 To build and run an HMM Model, go to your terminal and run: 
