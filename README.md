@@ -88,7 +88,7 @@ Collect all not-human proteins containing a kunitz domain from the UniProtKB (N 
 - PFAM id = PF00014
 - SwissProt reviewed
 
- and download the fasta files. 
+ Download the fasta file `kunitz_not_human.fasta`. 
 
 ### 4.2 Merge datasets:
 
