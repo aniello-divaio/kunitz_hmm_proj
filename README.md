@@ -106,27 +106,28 @@ Remove all sequences with a `sequence identity ≥ 95%` and a `Nres ≥ 50` mapp
 ### 5.1 Build BLAST DB:
 Create a blast database with the kunitz proteins from UniProtKB/SwissProt
 ```bash
-makeblastdb -in hmm_set.fasta -input_type fasta -dbtype prot -out hmm_set.fasta
+makeblastdb -in kunitz_all.fasta -input_type fasta -dbtype prot -out kunitz_all.fasta
 ```
 
 ### 5.2 Run a blastp search on the aligned sequences:
 ```bash
-blastp -query kunitz_hmm_ready.ali -db hmm_set.fasta -out kunitz_pdb22.blast -outfmt 7
+blastp -query kunitz_MSA_clean.ali -db kunitz_all.fasta -out kunitz_pdb22.blast -outfmt 7
 ```
-Filter highly similar hits and create a file with the ids to remove:
+output file: `kunitz_pdb22.blast`
+
+### 5.3 Filter highly similar hits and create a file with the ids to remove:
 ```
 grep -v "^#" kunitz_pdb22.blast | awk '{if ($3>=95 && $4>=50) print $2}' | sort -u > high_match_22.txt
 cut -d'|' -f2 high_match_22.txt > to_remove.txt
 ```
 
-### 5.3 Extract the unmatched ids for the proteins that will form the positive database:
+### 5.4 Extract the unmatched ids for the proteins that will form the positive database:
 Create the file txt with all the ids
 ```bash
-grep "^>" hmm_set.fasta | cut -d'|' -f2 > kunitz_all.txt
+grep "^>" kunitz_all.fasta | cut -d'|' -f2 > kunitz_all.txt
 comm -23 <(sort kunitz_all.txt) <(sort to_remove.txt) > kunitz_final.txt
 ```
 
----
 
 ## 6. Negative Dataset Preparation
 Collect all SwissProt reviewed not-kunitz proteins (573.230) and download the fasta file
