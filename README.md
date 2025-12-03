@@ -47,6 +47,7 @@ grep '^>' pdb_kunitz_cluster.txt | sed 's/^>//' | sed 's/_/:/' > pdb_kunitz_ids_
 [PDBeFold](https://www.ebi.ac.uk/msd-srv/ssm/) is the platform where the MSA was performed, with the following criteria:
 - Flag Submission Form: multiple
 - Upload the list `pdb_kunitz_ids_25.txt`
+
 Submit your query and download the resulting `efold_output.txt`.
 
 then clean it using the script:
