@@ -130,13 +130,11 @@ comm -23 <(sort kunitz_all.txt) <(sort to_remove.txt) > kunitz_final.txt
 
 
 ## 6. Negative Dataset Preparation
-Collect all SwissProt reviewed not-kunitz proteins (573.230) and download the fasta file
-(e.g. uniprot_sprot.fasta --> this is the whole uniprot databses WITHOUT the Kunitz proteins). Filters are:
+Collect all SwissProt reviewed not-kunitz proteins (573.263) and download the fasta file (`uniprot_sprot.fasta`, the whole uniprot databses without the Kunitz proteins). Filters are:
 - Not PFAM id PF00014
 - SwissProt
-And repeat the process with Kunitz proteins
 
-### 6.1 Create a list of the IDs of the whole UniProtKB/SwissProt 
+### 6.1 Create a list of the IDs of UniProtKB/SwissProt dataset
 
 ```bash
 grep ">" uniprot_sprot.fasta | cut -d "|" -f2 > uniprot_sprot.txt
@@ -146,6 +144,7 @@ grep ">" uniprot_sprot.fasta | cut -d "|" -f2 > uniprot_sprot.txt
 ```
 comm -23 <(sort uniprot_sprot.txt) <(sort kunitz_final.txt) > negatives.txt
 ```
+output file: `negatives.txt`
 
 ---
 
