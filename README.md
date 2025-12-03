@@ -58,8 +58,10 @@ Following the same procedure, perform a second multiple structural alignment usi
 
 The downloaded FASTA file may contain inconsistencies such as, lowercase amino acids or extra information in the headers. To clean and standardize the file, use the `clean_fasta.sh` script provided in the repository:
 ``` bash
-clean_fasta.sh 
+clean_fasta.sh kunitz_msa_22.fasta
 ```
+`kunitz_msa_22.ali` will be used to build the HMM
+
 ## 3. Build the HMM Model
 To build and run an HMM Model, go to your terminal and run: 
 
