@@ -92,10 +92,10 @@ Collect all not-human proteins containing a kunitz domain from the UniProtKB (N 
 
 ### 4.2 Merge datasets:
 
-Merge the two Kunitz domain dataset files to form a unified collection of positive examples to test the HMM with `kunitz_all.fasta`
+Merge the two retrived Kunitz domain dataset files to form a unified collection of positive examples to test the HMM, using the command:
 
 ```bash
-cat NOT_human_kunitz.fasta kunitz_all.fasta > hmm_test_set.fasta
+cat kunitz_not_human.fasta kunitz_human.fasta > kunitz_all.fasta
 ```
 
 ---
