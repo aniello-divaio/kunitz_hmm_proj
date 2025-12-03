@@ -15,7 +15,7 @@ The resulting sequences will be downloaded as a custom report (cvs file format) 
 - Entry ID, PDB ID, Resolution
 - Sequence, Asym ID, PFAM annotation, Entity ID
 
-(`rcsb_pdb_custom_report.csv`) will be converted in a FASTA file using the following bash command:
+`rcsb_pdb_custom_report.csv` will be converted in a FASTA file using the following bash command:
 ```
 tr -d '"' < rcsb_pdb_custom_report.csv | awk -F ',' '{if (length($2)>0) {name=$2}; print name,$6,$8,$9}' | grep PF00014 | awk '{print ">"$1"_"$3; print $2}' > pdb_kunitz.fasta
 ```
