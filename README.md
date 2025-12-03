@@ -169,8 +169,8 @@ tail -n 286416 negatives_random.txt > neg_2.txt
 ### 7.3 Generate FASTA using `get_seq.py`:
 ```bash
 # Positives:
-python3 get_seq.py pos_1.txt NOT_uniprot_sprot.fasta > pos_1.fasta
-python3 get_seq.py pos_2.txt NOT_uniprot_sprot.fasta > pos_2.fasta
+python3 get_seq.py pos_1.txt kunitz_all.fasta > pos_1.fasta
+python3 get_seq.py pos_2.txt kunitz_all.fasta > pos_2.fasta
 
 # Negatives: 
 python3 get_seq.py neg_1.txt uniprot_sprot.fasta > neg_1.fasta
