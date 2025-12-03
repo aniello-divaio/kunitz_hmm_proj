@@ -181,21 +181,30 @@ python3 get_seq.py neg_2.txt uniprot_sprot.fasta > neg_2.fasta
 
 ## 8. HMM Scanning and Classification
 
+Testing on positive dataset:
 ```bash
-hmmsearch -Z 1000 --max --tblout pos_1.out kunitz_domain.hmm pos_1.fasta
-hmmsearch -Z 1000 --max --tblout neg_1.out kunitz_domain.hmm neg_1.fasta
+hmmsearch -Z 1000 --max --tblout pos_1.out kunitz.hmm pos_1.fasta
+hmmsearch -Z 1000 --max --tblout pos_2.out kunitz.hmm pos_2.fasta
 
-# Format
-grep -v "^#" pos_1.out | awk '{split($1,a,"|"); print a[2],1,$5,$8}' | tr " " "\t" > pos_1.class
-grep -v "^#" neg_1.out | awk '{split($1,a,"|"); print a[2],0,$5,$8}' | tr " " "\t" > neg_1.class
-
-# Add missing negatives
-comm -23 <(sort neg_1.txt) <(cut -f 1 neg_1.class | sort) | awk '{print $1"\t0\t10.0\t10.0"}' >> neg_1.class
-
-# Combine sets
-cat pos_1.class neg_1.class > set_1.class
+grep -v "^#" pos_1.out |awk '{split($1,a,"\|"); print a[2],1,$5,$8}' |tr " " "\t" >pos_1.class
+grep -v "^#" pos_2.out |awk '{split($1,a,"\|"); print a[2],1,$5,$8}' |tr " " "\t" >pos_2.class
 ```
+Testing on negative dataset:
+```
+hmmsearch -Z 1000 --max --tblout neg_1.out kunitz.hmm neg_1.fasta
+hmmsearch -Z 1000 --max --tblout neg_2.out kunitz.hmm neg_2.fasta
 
+grep -v "^#" neg_1.out |awk '{split($1,a,"\|"); print a[2],0,$5,$8}' |tr " " "\t" >neg_1.class
+grep -v "^#" neg_2.out |awk '{split($1,a,"\|"); print a[2],0,$5,$8}' |tr " " "\t" >neg_2.class
+
+comm -23 <(sort neg_1.txt) <(cut -f 1 neg_1.class | sort) | awk '{print $1"\t0\t10.0\t10.0"}' >> neg_1.class
+comm -23 <(sort neg_2.txt) <(cut -f 1 neg_2.class | sort) | awk '{print $1"\t0\t10.0\t10.0"}' >> neg_2.class
+```
+Combine the two datasets:
+```
+cat pos_1.class neg_1.class >set_1.class
+cat pos_2.class neg_2.class >set_2.class
+```
 ---
 
 ## 9. Performance Evaluation
