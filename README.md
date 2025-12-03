@@ -54,8 +54,12 @@ From this file three sequences were manually removed:
 - 5JBT:Y (lowest number of aligned residues (Nres = 38))
 - 4BQD:A removed due to the lack in the its chain A of one or both β-strands typical of Kunitz fold
 
-Following the same procedure, perform a second multiple structural alignment using the set of 22 proteins
+Following the same procedure, perform a second multiple structural alignment using the set of 22 proteins, retrieving `kunitz_msa_22.fasta`. 
 
+The downloaded FASTA file may contain inconsistencies such as, lowercase amino acids or extra information in the headers. To clean and standardize the file, use the `clean_fasta.sh` script provided in the repository:
+``` bash
+clean_fasta.sh 
+```
 ## 3. Build the HMM Model
 To build and run an HMM Model, go to your terminal and run: 
 
