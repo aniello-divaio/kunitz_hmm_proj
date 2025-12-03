@@ -1,4 +1,4 @@
-# In Silico Modeling of the Kunitz-Type Domain Using Profile Hidden Markov Models
+# In-Silico Modeling of the Kunitz-Type Domain Using Profile HMM
 This repository presents a full workflow for building and evaluating a profile Hidden Markov Model (HMM) to identify the Kunitz protease inhibitor domain (PF00014) using structural and sequence data. The workflow integrates structural alignment, sequence filtering, model training, dataset construction, and performance evaluation.
 
 ---
@@ -6,18 +6,21 @@ This repository presents a full workflow for building and evaluating a profile H
 ## 1. Structural Data Acquisition and Preprocessing
 
 ### 1.1 Retrieve PDB entries with:
-Go to https://www2.rcsb.org/ and with advanced research get a set of proteins with with Kunitz domain (N=160)
-- Resolution ≤ 3.5 Å
+Go to (PDB)[https://www2.rcsb.org/] and with advanced research get a set of proteins with with Kunitz domain (N=160)
 - PFAM ID = PF00014
+- Resolution ≤ 3.5 Å
 - Sequence length between 45 and 80 residues
 
-### 1.2 Create a custom PDB report:
-Following these specifics:
+The resulting sequences will be downloaded as a custom report (cvs file format) following these specifics:
 - Entry ID, PDB ID, Resolution
 - Sequence, Asym ID, PFAM annotation, Entity ID
-Download it in a  `.cvs` file, then convert it in FASTA using `convert_to_fasta.sh`.
 
-### 1.3 Run `cd-hit`
+(`rcsb_pdb_custom_report.csv`) will be converted in a FASTA file using the following bash command:
+```
+tr -d '"' < 1_Advanced_Search_tabular_report_BG.csv | awk -F ',' '{if (length($2)>0) {name=$2}; print name,$6,$8,$9}' | grep PF00014 | awk '{print ">"$1"_"$3; print $2}' > pdb_kunitz.fasta
+```
+
+### 1.2 Run `cd-hit`
 Open the terminal and run 'cd-hit' with 90% threshold:
 
 ```bash
