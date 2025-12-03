@@ -81,6 +81,8 @@ From [UniProtKB](https://www.uniprot.org/) collect all human proteins containg a
 - PFAM id = PF00014 4. SwissProt 	reviewed
 - Reviewed: Yes
 
+Output file: `kunitz_human.fasta`
+
 Collect all not-human proteins containing a kunitz domain from the UniProtKB (N = 380) and download the fasta file (e.g kunitz_not_human.fasta) with these filters:
 - Not human (NOT Taxonomy [OC] = 9606)
 - PFAM id = PF00014
