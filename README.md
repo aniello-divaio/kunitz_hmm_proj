@@ -68,6 +68,7 @@ To build and run an HMM Model, go to your terminal and run:
 ```bash
 hmmbuild kunitz.hmm kunitz_MSA_clean.ali
 ```
+Output file: `kunitz.hmm`
 
 ---
 
