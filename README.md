@@ -66,7 +66,7 @@ clean_fasta.sh kunitz_msa_22.fasta
 To build and run an HMM Model, go to your terminal and run: 
 
 ```bash
-hmmbuild kunitz_domain.hmm kunitz_hmm_ready.fasta
+hmmbuild kunitz.hmm kunitz_MSA_clean.ali
 ```
 
 ---
