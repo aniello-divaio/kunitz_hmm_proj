@@ -78,7 +78,7 @@ Output file: `kunitz.hmm`
 ### 4.1 Download the datasets:
 From [UniProtKB](https://www.uniprot.org/) collect all human proteins containg a Kunitz domain from UniProtKB database (N = 18) with these filters: 
 - Human (Taxonomy [OC] = 9606) 
-- PFAM id = PF00014 4. SwissProt 	reviewed
+- PFAM id = PF00014
 - Reviewed: Yes
 
 Output file: `kunitz_human.fasta`
