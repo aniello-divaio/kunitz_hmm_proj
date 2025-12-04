@@ -211,25 +211,8 @@ cat pos_2.class neg_2.class >set_2.class
 
 Use `performance.py`:
 ```bash
-python3 performance.py set_1.class 1e-1
-```
-
-Loop version:
-```bash
-# FOR SET_1
-for i in $(seq 1 12); do 
-echo "Threshold: 1e-$i" 
-python3 performance.py set_1.class 1e-$i 
-echo "" 
-done
-
-
-# FOR SET 2:
-for i in $(seq 1 12); do
-echo "Threshold: 1e-$i";
-python3 performance.py set_2.class 1e-$i;     
-echo "";
-done 
+for i in `seq 1 12`; do python3 performance.py set_2.class 1e-$i; done
+for i in `seq 1 12`; do python3 performance.py set_1.class 1e-$i; done
 ```
 
 Metrics reported:
