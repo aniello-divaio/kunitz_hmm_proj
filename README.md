@@ -214,6 +214,13 @@ Use `performance.py`:
 for i in `seq 1 12`; do python3 performance.py set_2.class 1e-$i; done
 for i in `seq 1 12`; do python3 performance.py set_1.class 1e-$i; done
 ```
+### 9.1 Visualize the Performance
+In order to visualize how HMM performed, `performance_tsv.py` was used, following these commands:
+```
+python3 performance_tsv.py set_1.class
+python3 performance_tsv.py set_2.class
+```
+After obtained .tsv files, those were plotted using Rstudio, specifically the script `perfomance_graph.R`
 
 Metrics reported:
 - TP, FP, TN, FN
