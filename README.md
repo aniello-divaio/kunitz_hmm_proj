@@ -2,6 +2,10 @@
 This repository presents a full workflow for building and evaluating a profile Hidden Markov Model (HMM) to identify the Kunitz protease inhibitor domain (PF00014) using structural and sequence data. The workflow integrates structural alignment, sequence filtering, model training, dataset construction, and performance evaluation.
 
 ---
+## Tools and Scripts Used
+- `cd-hit`, `hmmbuild` (HMMER), `BLAST+`, `hmmsearch`, `PDBeFold`
+- `clean_fasta.sh`, `get_seq.py`, `performance.py`
+- `performance_tsv.py`, `performance_graph.R`
 
 ## 1. Structural Data Acquisition and Preprocessing
 
@@ -221,14 +225,40 @@ python3 performance_tsv.py set_1.class
 python3 performance_tsv.py set_2.class
 ```
 After obtained .tsv files, those were plotted using Rstudio, specifically the script `perfomance_graph.R`
+### Resulting Plot
+![Plot](9_Performance_Evaluation/Rplot.png)
 
-Metrics reported:
-- TP, FP, TN, FN
-- MCC, Q2, TPR, PPV
+### Confusion Matrix
+`set_1.class`
+Best-Domain (E-value = 1e-06)
+| TN         | TP      | FP    | FN    |
+| ---------- | ------- | ----- | ----- |
+| **286416** | **182** | **0** | **1** |
 
----
+| Metric                | Value     |
+| --------------------- | --------- |
+| **MCC**               | 0.9972623 |
+| **Q2 (Accuracy)**     | 0.9999965 |
+| **TPR (Sensitivity)** | 0.9945355 |
+| **TNR (Specificity)** | 1.0       |
+| **PPV (Precision)**   | 1.0       |
+| **FNR**               | 0.0054645 |
+| **FPR**               | 0.0       |
 
-## Tools and Scripts Used
 
-- `cd-hit`, `hmmbuild` (HMMER), `BLAST+`, `hmmsearch`, `PDBeFold`
-- `convert_to_fasta.sh`, `clean_fasta.sh`, `get_seq.py`, `performance.py`
+
+`set_2.class`
+Best-Domain (E-value = 1e-05)
+| TN         | TP      | FP    | FN    |
+| ---------- | ------- | ----- | ----- |
+| **286416** | **179** | **0** | **3** |
+
+| Metric                | Value     |
+| --------------------- | --------- |
+| **MCC**               | 0.9917188 |
+| **Q2 (Accuracy)**     | 0.9999895 |
+| **TPR (Sensitivity)** | 0.9835165 |
+| **TNR (Specificity)** | 1.0       |
+| **PPV (Precision)**   | 1.0       |
+| **FNR**               | 0.0164835 |
+| **FPR**               | 0.0       |
